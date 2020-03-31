@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ClockifyClient": {
+      "commandName": "Project",
+      "commandLineArgs": "W7YNx7B5h0KQx584 F:\\Stash\\clockify\\backup.sqlite3"
+    }
+  }
+}
