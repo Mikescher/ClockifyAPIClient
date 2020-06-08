@@ -139,12 +139,15 @@ namespace ClockifyAPIClient
                     var proj = string.IsNullOrEmpty(p.Value<string>("projectId")) ? null : projects.SingleOrDefault(c => c.ID == p.Value<string>("projectId")) ?? throw new APIException($"Project with id '{p.Value<string>("projectId")}' not found");
                     var task = string.IsNullOrEmpty(p.Value<string>("taskId"))    ? null : tasks.SingleOrDefault(c    => c.ID == p.Value<string>("taskId"))    ?? throw new APIException($"Task with id '{   p.Value<string>("taskId")   }' not found");
 
+                    if (p.Value<JObject>("timeInterval").Value<string>("end") == null) return null; // entry currently active
+
                     var start = DateTime.Parse(p.Value<JObject>("timeInterval").Value<string>("start"));
                     var end   = DateTime.Parse(p.Value<JObject>("timeInterval").Value<string>("end"));
                     var span  = XmlConvert.ToTimeSpan(p.Value<JObject>("timeInterval").Value<string>("duration"));
 
                     return new ClockifyTimeEntry(p.Value<string>("id"), p.Value<string>("description"), p.Value<bool>("billable"), user, ws, proj, task, start, end, span);
                 })
+                .Where(p => p != null)
                 .ToList();
         }
     }
